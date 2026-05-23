@@ -1,6 +1,19 @@
 # ARCMOTION FINALv3
 ComfyUI workflow Dockerized via [comfyui-wizard](https://comfy.getrunpod.io).
 Submission: https://comfy.getrunpod.io/dashboard/submissions/kd7f85wdkcqp34kbmth1hgcp098789kx
+## Pull the prebuilt image
+
+We've already built and published this image on Docker Hub:
+
+```bash
+docker pull timpietruskyrunpod/comfyui-wizard:kd7f85wdkcqp34kbmth1hgcp098789kx
+docker run --rm --gpus all -p 8188:8188 timpietruskyrunpod/comfyui-wizard:kd7f85wdkcqp34kbmth1hgcp098789kx
+```
+
+Then open http://localhost:8188.
+
+---
+
 ## Build it yourself
 ```bash
 docker build -t my-comfy-workflow .
