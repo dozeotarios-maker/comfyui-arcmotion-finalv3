@@ -43,10 +43,11 @@
    && cd /comfyui/custom_nodes/ComfyUI-WanVideoWrapper \
    && git checkout d18cdb1 || true 
 
-  RUN apt-get update && apt-get install -y --no-install-recommends gcc g++ build-essential && rm -rf /var/lib/apt/lists/*
-  
+  RUN apt-get update && apt-get install -y --no-install-recommends gcc g++ build-essential python3-dev && rm -rf /var/lib/apt/lists/*
+
   # Install Python deps for all custom nodes
   RUN for f in /comfyui/custom_nodes/*/requirements.txt; do pip install --no-cache-dir -r "$f" || true; done
+
 
   # Symlink models from network volume
   RUN rm -rf /comfyui/models && ln -sf /runpod-volume/runpod-slim/ComfyUI/models /comfyui/models
