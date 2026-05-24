@@ -38,6 +38,8 @@
   RUN git clone https://github.com/lihaoyun6/ComfyUI-FlashVSR_Ultra_Fast /comfyui/custom_nodes/ComfyUI-FlashVSR_Ultra_Fast \
    && cd /comfyui/custom_nodes/ComfyUI-FlashVSR_Ultra_Fast \
    && git checkout 4820b3f02347bddcbbb9a5a85ab7638fe976366e || true
+
+  RUN git clone --depth 1 https://github.com/kijai/ComfyUI-WanVideoWrapper /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
   
   # Install Python deps for all custom nodes
   RUN for f in /comfyui/custom_nodes/*/requirements.txt; do pip install --no-cache-dir -r "$f" || true; done
