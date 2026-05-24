@@ -2,9 +2,7 @@
   FROM runpod/worker-comfyui:5.8.4-base
 
   # Custom nodes
-  RUN git clone https://github.com/rgthree/rgthree-comfy /comfyui/custom_nodes/rgthree-comfy \
-   && cd /comfyui/custom_nodes/rgthree-comfy \
-   && git checkout 8ff50e4521881eca1fe26aec9615fc9362474931 || true
+  RUN git clone https://github.com/rgthree/rgthree-comfy /comfyui/custom_nodes/rgthree-comfy 
 
   RUN git clone https://github.com/kijai/ComfyUI-segment-anything-2 /comfyui/custom_nodes/ComfyUI-segment-anything-2 \
    && cd /comfyui/custom_nodes/ComfyUI-segment-anything-2 \
