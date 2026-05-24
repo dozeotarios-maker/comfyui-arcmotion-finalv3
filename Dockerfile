@@ -1,20 +1,49 @@
 # rebuild trigger 2026-05-24
-# clean base image containing only comfyui, comfy-cli and comfyui-manager
-FROM runpod/worker-comfyui:5.8.4-base
+  # clean base image containing only comfyui, comfy-cli and comfyui-manager
+  FROM runpod/worker-comfyui:5.8.4-base
 
-# build-time tokens for gated downloads — never baked into final image.
-# pass via: docker build --build-arg HF_TOKEN=$HF_TOKEN ...
+  # install custom nodes into comfyui
+  RUN git clone https://github.com/rgthree/rgthree-comfy /comfyui/custom_nodes/rgthree-comfy && cd /comfyui/custom_nodes/rgthree-comfy && (git checkout
+  8ff50e4521881eca1fe26aec9615fc9362474931 2>/dev/null || (git fetch origin 8ff50e4521881eca1fe26aec9615fc9362474931 --depth=1 && git checkout
+  8ff50e4521881eca1fe26aec9615fc9362474931) || echo "WARN: commit 8ff50e4521881eca1fe26aec9615fc9362474931 unreachable in https://github.com/rgthree/rgthree-comfy, 
+  falling back to default branch HEAD")
+  RUN git clone https://github.com/kijai/ComfyUI-segment-anything-2 /comfyui/custom_nodes/ComfyUI-segment-anything-2 && cd
+  /comfyui/custom_nodes/ComfyUI-segment-anything-2 && (git checkout 0c35fff5f382803e2310103357b5e985f5437f32 2>/dev/null || (git fetch origin
+  0c35fff5f382803e2310103357b5e985f5437f32 --depth=1 && git checkout 0c35fff5f382803e2310103357b5e985f5437f32) || echo "WARN: commit 
+  0c35fff5f382803e2310103357b5e985f5437f32 unreachable in https://github.com/kijai/ComfyUI-segment-anything-2, falling back to default branch HEAD")
+  RUN git clone https://github.com/kijai/ComfyUI-KJNodes /comfyui/custom_nodes/ComfyUI-KJNodes && cd /comfyui/custom_nodes/ComfyUI-KJNodes && (git checkout
+  00da1910634fbf314d407608efb281ae6f7f1ba2 2>/dev/null || (git fetch origin 00da1910634fbf314d407608efb281ae6f7f1ba2 --depth=1 && git checkout
+  00da1910634fbf314d407608efb281ae6f7f1ba2) || echo "WARN: commit 00da1910634fbf314d407608efb281ae6f7f1ba2 unreachable in https://github.com/kijai/ComfyUI-KJNodes, 
+  falling back to default branch HEAD")
+  RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite /comfyui/custom_nodes/ComfyUI-VideoHelperSuite && cd
+  /comfyui/custom_nodes/ComfyUI-VideoHelperSuite && (git checkout 993082e4f2473bf4acaf06f51e33877a7eb38960 2>/dev/null || (git fetch origin
+  993082e4f2473bf4acaf06f51e33877a7eb38960 --depth=1 && git checkout 993082e4f2473bf4acaf06f51e33877a7eb38960) || echo "WARN: commit 
+  993082e4f2473bf4acaf06f51e33877a7eb38960 unreachable in https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite, falling back to default branch HEAD")
+  RUN git clone https://github.com/kijai/ComfyUI-WanAnimatePreprocess /comfyui/custom_nodes/ComfyUI-WanAnimatePreprocess && cd
+  /comfyui/custom_nodes/ComfyUI-WanAnimatePreprocess && (git checkout 1a35b81a418bbba093356ad19b19bf2a76a24f4e 2>/dev/null || (git fetch origin
+  1a35b81a418bbba093356ad19b19bf2a76a24f4e --depth=1 && git checkout 1a35b81a418bbba093356ad19b19bf2a76a24f4e) || echo "WARN: commit 
+  1a35b81a418bbba093356ad19b19bf2a76a24f4e unreachable in https://github.com/kijai/ComfyUI-WanAnimatePreprocess, falling back to default branch HEAD")
+  RUN git clone https://github.com/yolain/ComfyUI-Easy-Use /comfyui/custom_nodes/ComfyUI-Easy-Use && cd /comfyui/custom_nodes/ComfyUI-Easy-Use && (git checkout
+  81c510c06e18dffd4f43518644fc35964c9168ca 2>/dev/null || (git fetch origin 81c510c06e18dffd4f43518644fc35964c9168ca --depth=1 && git checkout
+  81c510c06e18dffd4f43518644fc35964c9168ca) || echo "WARN: commit 81c510c06e18dffd4f43518644fc35964c9168ca unreachable in https://github.com/yolain/ComfyUI-Easy-Use, 
+  falling back to default branch HEAD")
+  RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts /comfyui/custom_nodes/ComfyUI-Custom-Scripts && cd /comfyui/custom_nodes/ComfyUI-Custom-Scripts &&
+   (git checkout 609f3afaa74b2f88ef9ce8d939626065e3247469 2>/dev/null || (git fetch origin 609f3afaa74b2f88ef9ce8d939626065e3247469 --depth=1 && git checkout
+  609f3afaa74b2f88ef9ce8d939626065e3247469) || echo "WARN: commit 609f3afaa74b2f88ef9ce8d939626065e3247469 unreachable in 
+  https://github.com/pythongosssss/ComfyUI-Custom-Scripts, falling back to default branch HEAD")
+  RUN comfy node install --exit-on-fail comfyui-workflow-encrypt@1.0.0 --mode remote || (echo "WARN: comfyui-workflow-encrypt@1.0.0 unavailable in registry, falling back 
+  to latest" >&2 && comfy node install --exit-on-fail comfyui-workflow-encrypt --mode remote)
+  RUN git clone https://github.com/chflame163/ComfyUI_LayerStyle /comfyui/custom_nodes/ComfyUI_LayerStyle && cd /comfyui/custom_nodes/ComfyUI_LayerStyle && (git checkout
+  d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935 2>/dev/null || (git fetch origin d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935 --depth=1 && git checkout
+  d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935) || echo "WARN: commit d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935 unreachable in 
+  https://github.com/chflame163/ComfyUI_LayerStyle, falling back to default branch HEAD")
+  RUN git clone https://github.com/lihaoyun6/ComfyUI-FlashVSR_Ultra_Fast /comfyui/custom_nodes/ComfyUI-FlashVSR_Ultra_Fast && cd
+  /comfyui/custom_nodes/ComfyUI-FlashVSR_Ultra_Fast && (git checkout 4820b3f02347bddcbbb9a5a85ab7638fe976366e 2>/dev/null || (git fetch origin
+  4820b3f02347bddcbbb9a5a85ab7638fe976366e --depth=1 && git checkout 4820b3f02347bddcbbb9a5a85ab7638fe976366e) || echo "WARN: commit 
+  4820b3f02347bddcbbb9a5a85ab7638fe976366e unreachable in https://github.com/lihaoyun6/ComfyUI-FlashVSR_Ultra_Fast, falling back to default branch HEAD")
 
-# install custom nodes into comfyui
-RUN git clone https://github.com/rgthree/rgthree-comfy /comfyui/custom_nodes/rgthree-comfy && cd /comfyui/custom_nodes/rgthree-comfy && (git checkout 8ff50e4521881eca1fe26aec9615fc9362474931 2>/dev/null || (git fetch origin 8ff50e4521881eca1fe26aec9615fc9362474931 --depth=1 && git checkout 8ff50e4521881eca1fe26aec9615fc9362474931) || echo "WARN: commit 8ff50e4521881eca1fe26aec9615fc9362474931 unreachable in https://github.com/rgthree/rgthree-comfy, falling back to default branch HEAD")
-RUN git clone https://github.com/kijai/ComfyUI-segment-anything-2 /comfyui/custom_nodes/ComfyUI-segment-anything-2 && cd /comfyui/custom_nodes/ComfyUI-segment-anything-2 && (git checkout 0c35fff5f382803e2310103357b5e985f5437f32 2>/dev/null || (git fetch origin 0c35fff5f382803e2310103357b5e985f5437f32 --depth=1 && git checkout 0c35fff5f382803e2310103357b5e985f5437f32) || echo "WARN: commit 0c35fff5f382803e2310103357b5e985f5437f32 unreachable in https://github.com/kijai/ComfyUI-segment-anything-2, falling back to default branch HEAD")
-RUN git clone https://github.com/kijai/ComfyUI-KJNodes /comfyui/custom_nodes/ComfyUI-KJNodes && cd /comfyui/custom_nodes/ComfyUI-KJNodes && (git checkout 00da1910634fbf314d407608efb281ae6f7f1ba2 2>/dev/null || (git fetch origin 00da1910634fbf314d407608efb281ae6f7f1ba2 --depth=1 && git checkout 00da1910634fbf314d407608efb281ae6f7f1ba2) || echo "WARN: commit 00da1910634fbf314d407608efb281ae6f7f1ba2 unreachable in https://github.com/kijai/ComfyUI-KJNodes, falling back to default branch HEAD")
-RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite /comfyui/custom_nodes/ComfyUI-VideoHelperSuite && cd /comfyui/custom_nodes/ComfyUI-VideoHelperSuite && (git checkout 993082e4f2473bf4acaf06f51e33877a7eb38960 2>/dev/null || (git fetch origin 993082e4f2473bf4acaf06f51e33877a7eb38960 --depth=1 && git checkout 993082e4f2473bf4acaf06f51e33877a7eb38960) || echo "WARN: commit 993082e4f2473bf4acaf06f51e33877a7eb38960 unreachable in https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite, falling back to default branch HEAD")
-RUN git clone https://github.com/kijai/ComfyUI-WanAnimatePreprocess /comfyui/custom_nodes/ComfyUI-WanAnimatePreprocess && cd /comfyui/custom_nodes/ComfyUI-WanAnimatePreprocess && (git checkout 1a35b81a418bbba093356ad19b19bf2a76a24f4e 2>/dev/null || (git fetch origin 1a35b81a418bbba093356ad19b19bf2a76a24f4e --depth=1 && git checkout 1a35b81a418bbba093356ad19b19bf2a76a24f4e) || echo "WARN: commit 1a35b81a418bbba093356ad19b19bf2a76a24f4e unreachable in https://github.com/kijai/ComfyUI-WanAnimatePreprocess, falling back to default branch HEAD")
-RUN git clone https://github.com/yolain/ComfyUI-Easy-Use /comfyui/custom_nodes/ComfyUI-Easy-Use && cd /comfyui/custom_nodes/ComfyUI-Easy-Use && (git checkout 81c510c06e18dffd4f43518644fc35964c9168ca 2>/dev/null || (git fetch origin 81c510c06e18dffd4f43518644fc35964c9168ca --depth=1 && git checkout 81c510c06e18dffd4f43518644fc35964c9168ca) || echo "WARN: commit 81c510c06e18dffd4f43518644fc35964c9168ca unreachable in https://github.com/yolain/ComfyUI-Easy-Use, falling back to default branch HEAD")
-RUN git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts /comfyui/custom_nodes/ComfyUI-Custom-Scripts && cd /comfyui/custom_nodes/ComfyUI-Custom-Scripts && (git checkout 609f3afaa74b2f88ef9ce8d939626065e3247469 2>/dev/null || (git fetch origin 609f3afaa74b2f88ef9ce8d939626065e3247469 --depth=1 && git checkout 609f3afaa74b2f88ef9ce8d939626065e3247469) || echo "WARN: commit 609f3afaa74b2f88ef9ce8d939626065e3247469 unreachable in https://github.com/pythongosssss/ComfyUI-Custom-Scripts, falling back to default branch HEAD")
-RUN comfy node install --exit-on-fail comfyui-workflow-encrypt@1.0.0 --mode remote || (echo "WARN: comfyui-workflow-encrypt@1.0.0 unavailable in registry, falling back to latest" >&2 && comfy node install --exit-on-fail comfyui-workflow-encrypt --mode remote)
-RUN git clone https://github.com/chflame163/ComfyUI_LayerStyle /comfyui/custom_nodes/ComfyUI_LayerStyle && cd /comfyui/custom_nodes/ComfyUI_LayerStyle && (git checkout d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935 2>/dev/null || (git fetch origin d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935 --depth=1 && git checkout d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935) || echo "WARN: commit d94bef1ee5ed3656f5ff1bb2830a4ffd94f40935 unreachable in https://github.com/chflame163/ComfyUI_LayerStyle, falling back to default branch HEAD")
-RUN git clone https://github.com/lihaoyun6/ComfyUI-FlashVSR_Ultra_Fast /comfyui/custom_nodes/ComfyUI-FlashVSR_Ultra_Fast && cd /comfyui/custom_nodes/ComfyUI-FlashVSR_Ultra_Fast && (git checkout 4820b3f02347bddcbbb9a5a85ab7638fe976366e 2>/dev/null || (git fetch origin 4820b3f02347bddcbbb9a5a85ab7638fe976366e --depth=1 && git checkout 4820b3f02347bddcbbb9a5a85ab7638fe976366e) || echo "WARN: commit 4820b3f02347bddcbbb9a5a85ab7638fe976366e unreachable in https://github.com/lihaoyun6/ComfyUI-FlashVSR_Ultra_Fast, falling back to default branch HEAD")
+  # Install Python deps for all custom nodes
+  RUN for f in /comfyui/custom_nodes/*/requirements.txt; do pip install --no-cache-dir -r "$f" || true; done
 
-RUN rm -rf /comfyui/models && ln -sf /runpod-volume/runpod-slim/ComfyUI/models /comfyui/models
+  # Symlink models from network volume
+  RUN rm -rf /comfyui/models && ln -sf /runpod-volume/runpod-slim/ComfyUI/models /comfyui/models
