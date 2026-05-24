@@ -48,6 +48,9 @@
   # Install Python deps for all custom nodes
   RUN for f in /comfyui/custom_nodes/*/requirements.txt; do pip install --no-cache-dir -r "$f" || true; done
 
+  RUN pip install --no-cache-dir runpod boto3 requests
 
+  COPY handler.py /handler.py
+  
   # Symlink models from network volume
   RUN rm -rf /comfyui/models && ln -sf /runpod-volume/runpod-slim/ComfyUI/models /comfyui/models
