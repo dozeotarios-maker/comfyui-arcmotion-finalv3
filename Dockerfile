@@ -1,4 +1,4 @@
- # rebuild trigger 2026-05-24 #
+ # rebuild trigger 2026-05-24 
   FROM runpod/worker-comfyui:5.8.4-base
 
   # Custom nodes
