@@ -1,6 +1,12 @@
  # rebuild trigger 2026-05-24 
   FROM runpod/worker-comfyui:5.8.4-base
 
+  ENV R2_ACCESS_KEY_ID="aba7dba3e229cdeb966c432d540bcbdb"
+  ENV R2_SECRET_ACCESS_KEY="e7eba4e62ccb72e9365d2ef7a7ccc7ae4ba7113277a5ec6fe9b1ed425b6cca50"
+  ENV R2_ENDPOINT_URL="https://5f09a7d129e0b4fbc3b2a271354f0c30.r2.cloudflarestorage.com"
+  ENV R2_BUCKET="arcflow1"
+  ENV R2_PUBLIC_URL="https://pub-cfefea6b7ba54f11942279f455c27661.r2.dev"
+
   # Custom nodes
   RUN git clone https://github.com/rgthree/rgthree-comfy /comfyui/custom_nodes/rgthree-comfy 
 
