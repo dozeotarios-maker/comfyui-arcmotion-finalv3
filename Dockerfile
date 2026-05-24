@@ -42,6 +42,8 @@
   RUN git clone https://github.com/kijai/ComfyUI-WanVideoWrapper /comfyui/custom_nodes/ComfyUI-WanVideoWrapper \
    && cd /comfyui/custom_nodes/ComfyUI-WanVideoWrapper \
    && git checkout d18cdb1 || true 
+
+  RUN apt-get update && apt-get install -y --no-install-recommends gcc g++ build-essential && rm -rf /var/lib/apt/lists/*
   
   # Install Python deps for all custom nodes
   RUN for f in /comfyui/custom_nodes/*/requirements.txt; do pip install --no-cache-dir -r "$f" || true; done
